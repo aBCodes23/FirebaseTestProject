@@ -88,7 +88,6 @@ export default LoginScreen;
 
 const styles = StyleSheet.create({
   header: {
-    color: "",
     fontSize: 35,
     marginBottom: 50,
   },

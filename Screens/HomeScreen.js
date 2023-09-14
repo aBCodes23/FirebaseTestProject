@@ -3,27 +3,18 @@ import {
   Text,
   TouchableOpacity,
   View,
-  Keyboard,
   TextInput,
 } from "react-native";
-import React, { useState } from "react";
-import { auth, firebase } from "../firebase";
+import React from "react";
+import { auth } from "../firebase";
 import { useNavigation } from "@react-navigation/native";
 
 const HomeScreen = () => {
   const navigation = useNavigation();
-  const newBookclub = firebase.firestore().collection("bookclubs");
-  const [bookclub, setBookclub] = useState();
 
-  const addClub = () => {
-    const data = { name: bookclub };
-    newBookclub
-      .add(data)
-      .then(() => {
-        setBookclub("");
-      })
-      .catch((err) => alert(err.message));
-  };
+  const navigateAddABookClub = () =>{
+    navigation.navigate("Add a Book Club")
+  }
 
   const handleSignOut = () => {
     auth
@@ -35,22 +26,12 @@ const HomeScreen = () => {
   };
   return (
     <>
-      <View style={styles.inputContainer}>
-        <TextInput
-          placeholder="Add a bookclub"
-          autoCapitalize="none"
-          onChangeText={(name) => {
-            setBookclub(name);
-          }}
-          value={bookclub}
-          multiline={true}
-        />
-        <TouchableOpacity style={styles.button} onPress={addClub}>
-          <Text>Add</Text>
-        </TouchableOpacity>
-      </View>
+
       <View style={styles.container}>
         <Text>Email: {auth.currentUser?.email}</Text>
+        <TouchableOpacity onPress={navigateAddABookClub} style={styles.button}>
+          <Text style={styles.buttonText}>Add a Book Club</Text>
+        </TouchableOpacity>
         <TouchableOpacity onPress={handleSignOut} style={styles.button}>
           <Text style={styles.buttonText}>Sign Out</Text>
         </TouchableOpacity>
@@ -62,28 +43,40 @@ const HomeScreen = () => {
 export default HomeScreen;
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  inputContainer: {
-    width: "80%",
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  button: {
-    backgroundColor: "#0782F9",
-    width: "60%",
-    padding: 15,
-    borderRadius: 10,
-    alignItems: "center",
-    marginTop: 40,
-  },
-  buttonText: {
-    color: "white",
-    fontWeight: "700",
-    fontSize: 16,
-  },
-});
+    container: {
+      backgroundColor: "blanchedalmond",
+      flex: 1,
+      justifyContent: "center",
+      alignItems: "center",
+    },
+    inputContainer: {
+      width: "80%",
+    },
+    input: {
+      backgroundColor: "#e3e3e3",
+      paddingHorizontal: 15,
+      paddingVertical: 10,
+      borderRadius: 10,
+      marginTop: 5,
+    },
+    buttonContainer: {
+      width: "60%",
+      justifyContent: "center",
+      alignItems: "center",
+      marginTop: 40,
+    },
+    button: {
+      backgroundColor: "#2a6b3b",
+      width: "60%",
+      padding: 15,
+      borderRadius: 10,
+      alignItems: "center",
+      marginTop: 40
+    },
+    buttonText: {
+      color: "#e3e3e3",
+      fontWeight: "700",
+      fontSize: 16,
+    },
+  });
+  
