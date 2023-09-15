@@ -26,7 +26,7 @@ useEffect(()=>{
 },[])
 
   const addClub = () => {
-    const data = { name: bookclub };
+    const data = { name: newbookclub };
     bookclubRef
       .add(data)
       .then(() => {
