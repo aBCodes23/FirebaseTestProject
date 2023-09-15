@@ -12,18 +12,18 @@ const AddABookClub = () => {
   const db = firebase.firestore();
   const bookclubRef = db.collection("bookclubs");
   const [newbookclub, setBookclub] = useState();
-  const [bookclubs, setBookclubs] = useState([])
+  const [bookclubs, setBookclubs] = useState([]);
 
-useEffect(()=>{
-  bookclubRef.get()
-  .then((collection)=>{
-    return collection.docs.map((doc)=> doc.data())
-  })
-  .then((mapped)=>{
-    setBookclubs(mapped)
-  })
-
-},[])
+  useEffect(() => {
+    bookclubRef
+      .get()
+      .then((collection) => {
+        return collection.docs.map((doc) => doc.data());
+      })
+      .then((mapped) => {
+        setBookclubs(mapped);
+      });
+  }, []);
 
   const addClub = () => {
     const data = { name: newbookclub };
@@ -36,15 +36,14 @@ useEffect(()=>{
   };
   return (
     <View style={styles.container}>
-
       <View style={styles.headerContainer}>
-      {bookclubs.map((bookclub)=>{
-        return <Text>{bookclub.name}</Text>
-      })}
+        <Text style={styles.header}> Get Booked 📚</Text>
       </View>
 
       <View style={styles.headerContainer}>
-        <Text style={styles.header}> Get Booked 📚</Text>
+        {bookclubs.map((bookclub) => {
+          return <Text>{bookclub.name}</Text>;
+        })}
       </View>
 
       <View style={styles.inputContainer}>
@@ -87,7 +86,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     paddingVertical: 10,
     borderRadius: 10,
-    marginTop: 5,
+    marginTop: 50,
   },
   buttonContainer: {
     width: "60%",

@@ -3,7 +3,6 @@ import {
   Text,
   TouchableOpacity,
   View,
-  TextInput,
 } from "react-native";
 import React from "react";
 import { auth } from "../firebase";
