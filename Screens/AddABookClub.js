@@ -4,19 +4,30 @@ import {
   TouchableOpacity,
   View,
   TextInput,
-  StatusBar
 } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { firebase } from "../firebase";
-import { useNavigation } from "@react-navigation/native";
 
 const AddABookClub = () => {
-  const newBookclub = firebase.firestore().collection("bookclubs");
-  const [bookclub, setBookclub] = useState();
+  const db = firebase.firestore();
+  const bookclubRef = db.collection("bookclubs");
+  const [newbookclub, setBookclub] = useState();
+  const [bookclubs, setBookclubs] = useState([])
+
+useEffect(()=>{
+  bookclubRef.get()
+  .then((collection)=>{
+    return collection.docs.map((doc)=> doc.data())
+  })
+  .then((mapped)=>{
+    setBookclubs(mapped)
+  })
+
+},[])
 
   const addClub = () => {
     const data = { name: bookclub };
-    newBookclub
+    bookclubRef
       .add(data)
       .then(() => {
         setBookclub("");
@@ -25,18 +36,26 @@ const AddABookClub = () => {
   };
   return (
     <View style={styles.container}>
+
+      <View style={styles.headerContainer}>
+      {bookclubs.map((bookclub)=>{
+        return <Text>{bookclub.name}</Text>
+      })}
+      </View>
+
       <View style={styles.headerContainer}>
         <Text style={styles.header}> Get Booked 📚</Text>
       </View>
+
       <View style={styles.inputContainer}>
         <TextInput
-        style={styles.input}
+          style={styles.input}
           placeholder="Add a bookclub"
           autoCapitalize="none"
           onChangeText={(name) => {
             setBookclub(name);
           }}
-          value={bookclub}
+          value={newbookclub}
           multiline={true}
         />
         <TouchableOpacity style={styles.button} onPress={addClub}>
@@ -82,7 +101,7 @@ const styles = StyleSheet.create({
     padding: 15,
     borderRadius: 10,
     alignItems: "center",
-    marginTop:10
+    marginTop: 10,
   },
   buttonOutline: {
     backgroundColor: "#e3e3e3",
